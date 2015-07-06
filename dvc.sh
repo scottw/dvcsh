@@ -6,50 +6,51 @@ _hash_obj() {
 init() {
     path="$1";
     if [ ! -d "${path}" ]; then echo "Path '${path}' does not exist"; return; fi
-    mkdir -p "${path}/.repo/objects";
     cd ${path};
-    export REPO=`pwd`;
-    echo "Initialized empty repository in ${REPO}/.repo/";
+    repo=`pwd`;
+    export DVCSH="${repo}/.dvcsh"
+    mkdir -p "${DVCSH}/objects";
+    echo "Initialized empty repository in ${DVCSH}/";
 }
 
 add() {
     file="$1";
     sha=$(_hash_obj "${file}");
-    cp -p "$1" "${REPO}/.repo/objects/${sha}"
+    cp -p "$1" "${DVCSH}/objects/${sha}"
 
-    if [ -f "${REPO}/.repo/index" ]; then
-        egrep -v "\t${file}\$" "${REPO}/.repo/index" >> "${REPO}/.repo/index.tmp"
+    if [ -f "${DVCSH}/index" ]; then
+        egrep -v "\t${file}\$" "${DVCSH}/index" >> "${DVCSH}/index.tmp"
     fi
-    printf "${sha}\t${file}\n" >> "${REPO}/.repo/index.tmp"
-    mv "${REPO}/.repo/index.tmp" "${REPO}/.repo/index"
+    printf "${sha}\t${file}\n" >> "${DVCSH}/index.tmp"
+    mv "${DVCSH}/index.tmp" "${DVCSH}/index"
 }
 
 commit() {
-    sha=$(_hash_obj "${REPO}/.repo/index");
-    cp -p "${REPO}/.repo/index" "${REPO}/.repo/objects/${sha}"
-    echo "index: ${sha}" > "${REPO}/.repo/commit.last";
+    sha=$(_hash_obj "${DVCSH}/index");
+    cp -p "${DVCSH}/index" "${DVCSH}/objects/${sha}"
+    echo "index: ${sha}" > "${DVCSH}/commit.last";
 
     date=$(date)
-    echo "date: ${date}" >> "${REPO}/.repo/commit.last";
-    if [ -f "${REPO}/.repo/HEAD" ]; then
-        parent=$(cat "${REPO}/.repo/HEAD");
-        echo "parent: ${parent}" >> "${REPO}/.repo/commit.last";
+    echo "date: ${date}" >> "${DVCSH}/commit.last";
+    if [ -f "${DVCSH}/HEAD" ]; then
+        parent=$(cat "${DVCSH}/HEAD");
+        echo "parent: ${parent}" >> "${DVCSH}/commit.last";
     fi
 
     comment="${1:-(no comment)}"
-    echo "comment: ${comment}" >> "${REPO}/.repo/commit.last"
+    echo "comment: ${comment}" >> "${DVCSH}/commit.last"
 
-    file="${REPO}/.repo/commit.last"
+    file="${DVCSH}/commit.last"
     sha=$(_hash_obj "${file}");
-    cp -p "${file}" "${REPO}/.repo/objects/${sha}"
+    cp -p "${file}" "${DVCSH}/objects/${sha}"
 
-    echo "${sha}" > "${REPO}/.repo/HEAD";
+    echo "${sha}" > "${DVCSH}/HEAD";
 }
 
 log() {
-    if [ ! -f "${REPO}/.repo/HEAD" ]; then echo "No commits yet"; return; fi
-    sha=$(cat "${REPO}/.repo/HEAD");
-    path="${REPO}/.repo/objects/${sha}"
+    if [ ! -f "${DVCSH}/HEAD" ]; then echo "No commits yet"; return; fi
+    sha=$(cat "${DVCSH}/HEAD");
+    path="${DVCSH}/objects/${sha}"
 
     while [ ! -z "${sha}" ]; do
         echo "commit: ${sha}"
@@ -58,6 +59,6 @@ log() {
         echo
 
         sha=$(egrep -h '^parent: ' "${path}" | awk '{print $2}')
-        path="${REPO}/.repo/objects/${sha}"
+        path="${DVCSH}/objects/${sha}"
     done
 }
