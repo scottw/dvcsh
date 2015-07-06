@@ -78,3 +78,9 @@ This shell file exports a handful of symbols into your shell:
 
 If you have executables or other shell functions defined, they will be
 clobbered until your next shell session.
+
+## Disclaimer
+
+I am not a Bourne shell expert. None of this code should be looked to
+as the right way to write Bourne shell code. I used the Bourne shell
+because everybody has access to it and it is fairly easy to read.
