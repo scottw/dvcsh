@@ -5,10 +5,11 @@ _hash_obj() {
 
 init() {
     path="$1";
-    if [ ! -d "${path}" ]; then echo "Path '${path}' does not exist"; return; fi
-    cd ${path};
-    repo=`pwd`;
-    export DVCSH="${repo}/.dvcsh"
+    if [ ! -d "${path}" ]; then
+        echo "Path '${path}' does not exist"; return;
+    fi
+    cd "${path}";
+    export DVCSH="$(pwd)/.dvcsh"
     mkdir -p "${DVCSH}/objects";
     echo "Initialized empty repository in ${DVCSH}/";
 }
@@ -27,22 +28,22 @@ add() {
 
 commit() {
     sha=$(_hash_obj "${DVCSH}/index");
+    if [ -f "${DVCSH}/objects/${sha}" ]; then
+        echo "nothing to commit"; return;
+    fi
     cp -p "${DVCSH}/index" "${DVCSH}/objects/${sha}"
-    echo "index: ${sha}" > "${DVCSH}/commit.last";
 
-    date=$(date)
-    echo "date: ${date}" >> "${DVCSH}/commit.last";
+    echo "index: ${sha}" > "${DVCSH}/commit.last";
+    echo "date: $(date)" >> "${DVCSH}/commit.last";
+
     if [ -f "${DVCSH}/HEAD" ]; then
-        parent=$(cat "${DVCSH}/HEAD");
-        echo "parent: ${parent}" >> "${DVCSH}/commit.last";
+        echo "parent: $(cat "${DVCSH}/HEAD")" >> "${DVCSH}/commit.last";
     fi
 
-    comment="${1:-(no comment)}"
-    echo "comment: ${comment}" >> "${DVCSH}/commit.last"
+    echo "comment: ${1:-(no comment)}" >> "${DVCSH}/commit.last"
 
-    file="${DVCSH}/commit.last"
-    sha=$(_hash_obj "${file}");
-    cp -p "${file}" "${DVCSH}/objects/${sha}"
+    sha=$(_hash_obj "${DVCSH}/commit.last");
+    cp -p "${DVCSH}/commit.last" "${DVCSH}/objects/${sha}"
 
     echo "${sha}" > "${DVCSH}/HEAD";
 }
