@@ -49,7 +49,9 @@ commit() {
 }
 
 log() {
-    if [ ! -f "${DVCSH}/HEAD" ]; then echo "No commits yet"; return; fi
+    if [ ! -f "${DVCSH}/HEAD" ]; then
+        echo "No commits yet"; return;
+    fi
     sha=$(cat "${DVCSH}/HEAD");
     path="${DVCSH}/objects/${sha}"
 
