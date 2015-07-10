@@ -46,6 +46,7 @@ commit() {
     cp -p "${DVCSH}/commit.last" "${DVCSH}/objects/${sha}"
 
     echo "${sha}" > "${DVCSH}/HEAD";
+    echo "[${sha}]"
 }
 
 log() {
