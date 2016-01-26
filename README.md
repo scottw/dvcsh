@@ -1,19 +1,12 @@
 # dvcsh - A distributed version control system in Bourne shell
 
-This repository holds the source for the elemental parts needed for a
-simple VCS written in Bourne shell. This is an academic exercise and
-should not be used for actual version control of anything critical.
+This repository holds the source for the elemental parts needed for a simple VCS written in Bourne shell. This is an academic exercise and should not be used for actual version control of anything critical.
 
 ## Motivation
 
-The reason for this is purely heuristic: how might one approach
-building a DVCS like `git`? Once you can understand this small bit of
-Bourne shell, you can also understand many of the underpinnings and
-architectural decisions that went into `git` and thereby gain a
-sufficiently robust mental model for understanding `git` better.
+The reason for this is purely heuristic: how might one approach building a DVCS like `git`? Once you can understand this small bit of Bourne shell, you can also understand many of the underpinnings and architectural decisions that went into `git` and thereby gain a sufficiently robust mental model for understanding `git` better.
 
-This repo will also hold additional `git` training and a presentation
-that accompany this shell file.
+This repo will also hold additional `git` training and a presentation that accompany this shell file.
 
 ## Suggested Usage
 
@@ -27,8 +20,7 @@ Source the file:
 
     $ source dvc.sh
 
-This will import the shell function definitions into your current
-shell session.
+This will import the shell function definitions into your current shell session.
 
 Create an empty directory and initialize it as a repo:
 
@@ -60,11 +52,7 @@ View the commit object and other artifacts:
 
 ## Future Work
 
-It would be fairly easy to make this even more git-like by adding tree
-objects. The `diff`, `checkout`, and `tag` commands are also
-low-hanging fruit at this point. With this one little file, we could
-be self-hosting and on our way to a lovely little DVCS of our
-own... if this weren't a purely academic exercise. Enjoy!
+It would be fairly easy to make this even more git-like by adding tree objects. The `diff`, `checkout`, and `tag` commands are also low-hanging fruit at this point. With this one little file, we could be self-hosting and on our way to a lovely little DVCS of our own... if this weren't a purely academic exercise. Enjoy!
 
 ## Warnings
 
@@ -76,11 +64,8 @@ This shell file exports a handful of symbols into your shell:
 * commit
 * log
 
-If you have executables or other shell functions defined, they will be
-clobbered until your next shell session.
+If you have executables or other shell functions defined, they will be clobbered until your next shell session.
 
 ## Disclaimer
 
-I am not a Bourne shell expert. None of this code should be looked to
-as the right way to write Bourne shell code. I used the Bourne shell
-because everybody has access to it and it is fairly easy to read.
+I am not a Bourne shell expert. None of this code should be looked to as the right way to write Bourne shell code. I used the Bourne shell because everybody has access to it and it is fairly easy to read.
