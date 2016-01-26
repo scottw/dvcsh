@@ -6,7 +6,7 @@ _hash_obj() {
 init() {
     path="$1";
     if [ ! -d "${path}" ]; then
-        echo "Path '${path}' does not exist"; return;
+        echo "Path '${path}' does not exist or is not a directory."; return;
     fi
     cd "${path}";
     export DVCSH="$(pwd)/.dvcsh"
@@ -33,13 +33,11 @@ commit() {
     fi
     cp -p "${DVCSH}/index" "${DVCSH}/objects/${sha}"
 
-    echo "index: ${sha}" > "${DVCSH}/commit.last";
-    echo "date: $(date)" >> "${DVCSH}/commit.last";
-
     if [ -f "${DVCSH}/HEAD" ]; then
         echo "parent: $(cat "${DVCSH}/HEAD")" >> "${DVCSH}/commit.last";
     fi
-
+    echo "index: ${sha}" > "${DVCSH}/commit.last";
+    echo "date: $(date)" >> "${DVCSH}/commit.last";
     echo "comment: ${1:-(no comment)}" >> "${DVCSH}/commit.last"
 
     sha=$(_hash_obj "${DVCSH}/commit.last");
