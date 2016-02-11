@@ -56,8 +56,8 @@ log() {
 
     while [ ! -z "${sha}" ]; do
         echo "commit: ${sha}"
-        printf "  "; egrep '^date: ' ${path}
-        printf "  "; egrep '^comment: ' ${path}
+        printf "  "; egrep '^date: ' "${path}"
+        printf "  "; egrep '^comment: ' "${path}"
         echo
 
         sha=$(egrep -h '^parent: ' "${path}" | awk '{print $2}')
