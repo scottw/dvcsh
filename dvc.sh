@@ -20,7 +20,7 @@ add() {
     cp -p "$1" "${DVCSH}/objects/${sha}"
 
     if [ -f "${DVCSH}/index" ]; then
-        egrep -v "\t${file}\$" "${DVCSH}/index" >> "${DVCSH}/index.tmp"
+        egrep -v "$(printf '\t')${file}\$" "${DVCSH}/index" >> "${DVCSH}/index.tmp"
     fi
     printf "${sha}\t${file}\n" >> "${DVCSH}/index.tmp"
     mv "${DVCSH}/index.tmp" "${DVCSH}/index"
